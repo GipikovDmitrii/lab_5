@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Context>
+<Context path="/Task Manager">
     <Resource name="jdbc/task_manager"
               auth="Container"
               type="javax.sql.DataSource"

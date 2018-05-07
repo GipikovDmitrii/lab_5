@@ -1,1 +1,29 @@
 CREATE DATABASE task_manager ENCODING 'UTF8';
+
+CREATE TABLE IF NOT EXISTS roles (
+  role_id SERIAL PRIMARY KEY UNIQUE,
+  role VARCHAR(5) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  user_id SERIAL PRIMARY KEY UNIQUE,
+  login VARCHAR (20) NOT NULL,
+  password VARCHAR (20) NOT NULL,
+  role INTEGER NOT NULL,
+  FOREIGN KEY (role) REFERENCES roles(role_id)
+);
+
+CREATE TABLE IF NOT EXISTS tasks (
+  task_id SERIAL PRIMARY KEY UNIQUE,
+  title VARCHAR(100) NOT NULL,
+  description VARCHAR(250),
+  createdDate TIMESTAMP NOT NULL,
+  endDate TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_task (
+  user_id INTEGER,
+  task_id INTEGER,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (task_id) REFERENCES tasks(task_id)
+);
