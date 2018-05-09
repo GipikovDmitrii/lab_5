@@ -10,11 +10,13 @@ INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'user');
 
 CREATE TABLE IF NOT EXISTS users (
   user_id SERIAL PRIMARY KEY,
-  login VARCHAR (20) NOT NULL,
+  login VARCHAR (20) NOT NULL UNIQUE ,
   password VARCHAR (20) NOT NULL,
   role INTEGER NOT NULL,
   FOREIGN KEY (role) REFERENCES roles(role_id)
 );
+
+INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, 'admin', 'ytrewq', 1);
 
 CREATE TABLE IF NOT EXISTS tasks (
   task_id SERIAL PRIMARY KEY,
@@ -33,7 +35,6 @@ CREATE TABLE IF NOT EXISTS user_task (
 
 --test data
 
-INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, 'admin', 'ytrewq', 1);
 INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, 'user', 'qwerty', 2);
 
 INSERT INTO tasks (task_id, title, description, createddate, enddate) VALUES (DEFAULT, 'testtitle', 'testdescription', TO_TIMESTAMP('2018/04/25 10:13', 'YYYY/MM/DD HH:MI'), TO_TIMESTAMP('2019/04/25 10:13', 'YYYY/MM/DD HH:MI'));

@@ -8,7 +8,7 @@
     <artifactId>Task Manager</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
-    <name>Task Manager</name>
+    <name>TaskManager</name>
 
     <dependencies>
         <dependency>
@@ -48,7 +48,7 @@
     </dependencies>
 
     <build>
-        <finalName>Task Manager</finalName>
+        <finalName>TaskManager</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
