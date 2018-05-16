@@ -5,18 +5,14 @@ CREATE TABLE IF NOT EXISTS roles (
   role VARCHAR(5) NOT NULL
 );
 
-INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'admin');
-INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'user');
-
 CREATE TABLE IF NOT EXISTS users (
   user_id SERIAL PRIMARY KEY,
-  login VARCHAR (20) NOT NULL UNIQUE ,
+  login VARCHAR (20) NOT NULL UNIQUE,
+  email VARCHAR (30) NOT NULL UNIQUE,
   password VARCHAR (20) NOT NULL,
   role INTEGER NOT NULL,
-  FOREIGN KEY (role) REFERENCES roles(role_id)
+  FOREIGN KEY (role) REFERENCES roles(role_id) ON DELETE CASCADE
 );
-
-INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, 'admin', 'ytrewq', 1);
 
 CREATE TABLE IF NOT EXISTS tasks (
   task_id SERIAL PRIMARY KEY,
@@ -27,18 +23,22 @@ CREATE TABLE IF NOT EXISTS tasks (
 );
 
 CREATE TABLE IF NOT EXISTS user_task (
-  user_id INTEGER,
-  task_id INTEGER,
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (task_id) REFERENCES tasks(task_id)
+  user_id INTEGER NOT NULL,
+  task_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (task_id) REFERENCES tasks(task_id) ON DELETE CASCADE
 );
 
 --test data
 
-INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, 'user', 'qwerty', 2);
+INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'admin');
+INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'user');
+
+INSERT INTO users (user_id, login, email, password, role) VALUES (DEFAULT, 'admin', 'admin@ya.ru', 'ytrewq', 1);
+INSERT INTO users (user_id, login, email, password, role) VALUES (DEFAULT, 'user', 'user@gmail.com', 'qwerty', 2);
 
 INSERT INTO tasks (task_id, title, description, createddate, enddate) VALUES (DEFAULT, 'testtitle', 'testdescription', TO_TIMESTAMP('2018/04/25 10:13', 'YYYY/MM/DD HH:MI'), TO_TIMESTAMP('2019/04/25 10:13', 'YYYY/MM/DD HH:MI'));
 INSERT INTO tasks (task_id, title, description, createddate, enddate) VALUES (DEFAULT, 'testtite2', 'testdescription2', TO_TIMESTAMP('2018/04/25 10:13', 'YYYY/MM/DD HH:MI'), TO_TIMESTAMP('2019/04/25 10:13', 'YYYY/MM/DD HH:MI'));
 
 INSERT INTO user_task (user_id, task_id) VALUES (2, 1);
-INSERT INTO user_task (user_id, task_id) VALUES (2, 2);
+INSERT INTO user_task (user_id, task_id) VALUES (1, 2);

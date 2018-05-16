@@ -8,11 +8,9 @@ public interface TaskDAO {
 
     void create(Task task);
 
-    List<Task> getAll();
-
-    Task readById(int id);
+    List<Task> readAll(int userId);
 
     void update(Task task);
 
-    void delete(Task task);
+    void delete(int taskId);
 }

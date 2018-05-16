@@ -11,6 +11,17 @@ public class Task {
     private Date createdDate;
     private Date endDate;
 
+    public Task() {
+    }
+
+    public Task(int id, String title, String description, Date createdDate, Date endDate) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.endDate = endDate;
+    }
+
     public int getId() {
         return id;
     }

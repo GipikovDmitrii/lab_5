@@ -5,8 +5,9 @@ import java.util.Objects;
 public class User {
 
     private int id;
-    private String username;
+    private String login;
     private String password;
+    private String email;
     private Role role;
 
     public int getId() {
@@ -17,12 +18,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String username) {
+        this.login = username;
     }
 
     public String getPassword() {
@@ -31,6 +32,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Role getRole() {
@@ -47,14 +56,14 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
-                Objects.equals(username, user.username) &&
+                Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, role);
+        return Objects.hash(id, login, password, role);
     }
 
     public static class Role {
@@ -65,9 +74,8 @@ public class User {
         public Role() {
         }
 
-        public Role(int id, String role) {
+        public Role(int id) {
             this.id = id;
-            this.role = role;
         }
 
         public int getId() {

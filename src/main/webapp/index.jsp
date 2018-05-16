@@ -16,8 +16,8 @@
     <div class="header">
         <nav>
             <ul>
-                <li><a href="login.jsp">Login</a></li>
-                <li><a href="registration.jsp">Registration</a></li>
+                <li><a href="/login.jsp">Login</a></li>
+                <li><a href="/registration.jsp">Registration</a></li>
             </ul>
         </nav>
     </div>

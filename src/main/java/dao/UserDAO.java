@@ -8,8 +8,6 @@ public interface UserDAO {
 
     User readByLogin(String login);
 
-    User readById(int id);
-
     void update(User user);
 
     void delete(User user);
