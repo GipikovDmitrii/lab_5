@@ -28,12 +28,12 @@ public class LoginServlet extends HttpServlet {
 
         User user = userService.getUserByLogin(username);
 
-        if (user.getPassword().equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
             req.getSession().setAttribute("user", user);
-
             resp.sendRedirect("/tasks");
         } else {
-            getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.setAttribute("message", "Incorrect username or password.");
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
 }

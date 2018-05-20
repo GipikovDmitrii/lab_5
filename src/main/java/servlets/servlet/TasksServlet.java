@@ -25,4 +25,9 @@ public class TasksServlet extends HttpServlet {
         req.setAttribute("taskList", tasks);
         req.getRequestDispatcher("/tasks.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
 }

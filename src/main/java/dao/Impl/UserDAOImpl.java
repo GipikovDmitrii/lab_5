@@ -19,7 +19,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void create(User user) {
-        String sql = "INSERT INTO users (user_id, login, password, role) VALUES (DEFAULT, (?), (?), (?));";
+        String sql = "INSERT INTO users (user_id, login, email, password, role) VALUES (DEFAULT, (?), (?), (?), (?));";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -27,8 +27,9 @@ public class UserDAOImpl implements UserDAO {
             connection = dataSource.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPassword());
-            statement.setInt(3, user.getRole().getId());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.setInt(4, user.getRole().getId());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

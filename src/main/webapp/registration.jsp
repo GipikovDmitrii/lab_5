@@ -13,21 +13,29 @@
     <title>Registration</title>
 </head>
 <body>
-    <form action="/registration" method="post">
-        <table>
-            <tr>
-                <td>Username:</td>
-                <td><input type="text" name="username"></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input type="text" name="password"></td>
-            </tr>
-            <tr>
-                <td><input class="button" type="submit" value="Registration"></td>
-            </tr>
-        </table>
-    </form>
-
+    <div>
+        <div>
+            <h3>Registration</h3>
+        </div>
+        <div>
+            <form action="/registration" method="post">
+                <div>
+                    <input type="text" placeholder="Username" name="username">
+                </div>
+                <div>
+                    <input type="text" placeholder="Email" name="email">
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+                <div>
+                    <p>${message}</p>
+                </div>
+                <div>
+                    <input class="button" type="submit" value="Registration">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
