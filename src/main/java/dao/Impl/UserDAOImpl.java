@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static Logger log = Logger.getLogger(TaskDAOImpl.class.getName());
+    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
     private DataSource dataSource = DAOFactory.getInstance().getDataSource();
 
     @Override
@@ -58,7 +58,7 @@ public class UserDAOImpl implements UserDAO {
             result = statement.executeQuery();
             if (result.next()) {
                 user = new User();
-                user.setId(Integer.parseInt(result.getString("user_id")));
+                user.setId(result.getInt("user_id"));
                 user.setLogin(result.getString("login"));
                 user.setPassword(result.getString("password"));
                 user.setRole(new User.Role(result.getInt("role")));

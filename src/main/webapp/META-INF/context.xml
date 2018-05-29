@@ -9,7 +9,7 @@
               autoCommit="false"
               maxIdle="10"
               removeAbandoned="true"
-              removeAbandonedTimeout="20"
+              removeAbandonedTimeout="60"
               logAbandoned="true"
               validationQuery="SELECT 1"
               username="postgres"

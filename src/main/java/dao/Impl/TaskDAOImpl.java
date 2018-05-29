@@ -4,13 +4,12 @@ import dao.DAOFactory;
 import dao.TaskDAO;
 import entity.Task;
 
+import entity.User;
 import org.apache.log4j.Logger;
+import org.postgresql.util.PGTimestamp;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +19,8 @@ public class TaskDAOImpl implements TaskDAO {
     private DataSource dataSource = DAOFactory.getInstance().getDataSource();
 
     @Override
-    public void create(Task task) {
-        String sql = "INSERT INTO tasks (task_id, title, description, createddate, enddate) VALUES (DEFAULT, (?), (?), (?), (?))";
+    public void create(Task task, int userId) {
+        String sql = "INSERT INTO tasks (task_id, title, description, createddate, enddate, user_id) VALUES (DEFAULT, (?), (?), current_timestamp, (?), (?));";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -30,8 +29,8 @@ public class TaskDAOImpl implements TaskDAO {
             statement = connection.prepareStatement(sql);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setString(3, task.getCreatedDate().toString());
-            statement.setString(4, task.getEndDate().toString());
+            statement.setTimestamp(3, new PGTimestamp(task.getEndDate().getTime()));
+            statement.setInt(4, userId);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,8 +45,8 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     @Override
-    public List<Task> readAll(int userId) {
-        String sql = "SELECT t.task_id, t.title, t.description, t.createddate, t.enddate FROM tasks AS t RIGHT JOIN user_task AS ut ON t.task_id = ut.task_id WHERE user_id = (?);";
+    public List<Task> readAll(User user) {
+        String sql = "SELECT t.task_id, t.title, t.description, t.createddate, t.enddate FROM tasks AS t WHERE user_id = (?);";
 
         List<Task> tasks = new ArrayList<>();
         Connection connection = null;
@@ -56,15 +55,15 @@ public class TaskDAOImpl implements TaskDAO {
         try {
             connection = dataSource.getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, userId);
+            statement.setInt(1, user.getId());
             result = statement.executeQuery();
             while (result.next()) {
                 Task task = new Task(
                         Integer.parseInt(result.getString("task_id")),
                         result.getString("title"),
                         result.getString("description"),
-                        result.getDate("createddate"),
-                        result.getDate("enddate")
+                        result.getTimestamp("createddate"),
+                        result.getTimestamp("enddate")
                 );
                 tasks.add(task);
             }
@@ -83,6 +82,41 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     @Override
+    public Task readById(int taskId) {
+        String sql = "SELECT task_id, title, description, createddate, enddate FROM tasks WHERE task_id = (?)";
+        Task task = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, taskId);
+            result = statement.executeQuery();
+            if (result.next()) {
+                task = new Task();
+                task.setId(result.getInt("task_id"));
+                task.setTitle(result.getString("title"));
+                task.setDescription(result.getString("description"));
+                task.setCreatedDate(result.getTimestamp("createddate"));
+                task.setEndDate(result.getTimestamp("enddate"));
+            }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return task;
+    }
+
+  @Override
     public void update(Task task) {
         String sql = "UPDATE tasks SET title = (?), description = (?) WHERE task_id = (?);";
 
