@@ -1,4 +1,4 @@
-package servlets.servlet;
+package servlets;
 
 import entity.User;
 import services.Impl.UserServiceImpl;
@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "registration", urlPatterns = "/registration")
@@ -31,7 +30,7 @@ public class RegistrationServlet extends HttpServlet {
 
         if (login.equals("") || password.equals("") || email.equals("")) {
             req.setAttribute("message", "Fill in all fields");
-            getServletContext().getRequestDispatcher("/registration.jsp").forward(req, resp);
+            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
 
         } else {
             User user = new User();

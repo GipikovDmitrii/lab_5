@@ -6,7 +6,6 @@ import entity.Task;
 
 import entity.User;
 import org.apache.log4j.Logger;
-import org.postgresql.util.PGTimestamp;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -29,7 +28,7 @@ public class TaskDAOImpl implements TaskDAO {
             statement = connection.prepareStatement(sql);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setTimestamp(3, new PGTimestamp(task.getEndDate().getTime()));
+            statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
             statement.setInt(4, userId);
             statement.execute();
         } catch (SQLException e) {
@@ -118,7 +117,7 @@ public class TaskDAOImpl implements TaskDAO {
 
   @Override
     public void update(Task task) {
-        String sql = "UPDATE tasks SET title = (?), description = (?) WHERE task_id = (?);";
+        String sql = "UPDATE tasks SET title = (?), description = (?), enddate = (?) WHERE task_id = (?);";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -127,7 +126,8 @@ public class TaskDAOImpl implements TaskDAO {
             statement = connection.prepareStatement(sql);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setInt(3, task.getId());
+            statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
+            statement.setInt(4, task.getId());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

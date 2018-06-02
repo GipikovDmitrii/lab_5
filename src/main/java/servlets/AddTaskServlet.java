@@ -1,4 +1,4 @@
-package servlets.servlet;
+package servlets;
 
 import entity.Task;
 import entity.User;

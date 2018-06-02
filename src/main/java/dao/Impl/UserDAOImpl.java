@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -41,6 +43,41 @@ public class UserDAOImpl implements UserDAO {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<User> readAll() {
+        String sql = "SELECT u.user_id, u.login, u.email, u.password, r.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.role_id;";
+        List<User> users = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            result = statement.executeQuery();
+            while (result.next()) {
+                User user = new User();
+                    user.setId(result.getInt("user_id"));
+                    user.setLogin(result.getString("login"));
+                    user.setEmail(result.getString("email"));
+                    user.setPassword(result.getString("password"));
+                    user.setRole(new User.Role(result.getString("role")));
+                    users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return users;
     }
 
     @Override
@@ -104,7 +141,25 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(int id) {
+        String sql = "DELETE FROM users WHERE user_id = (?)";
 
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

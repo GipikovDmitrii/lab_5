@@ -12,10 +12,12 @@ public class TaskServiceImpl implements TaskService {
 
     private TaskDAO dao = DAOFactory.getInstance().getTaskDao();
 
+    @Override
     public void addTask(Task task, int userId) {
         dao.create(task, userId);
     }
 
+    @Override
     public List<Task> getAllTask(User user) {
         return dao.readAll(user);
     }
@@ -25,10 +27,12 @@ public class TaskServiceImpl implements TaskService {
         return dao.readById(taskId);
     }
 
+    @Override
     public void updateTask(Task task) {
         dao.update(task);
     }
 
+    @Override
     public void deleteTask(int taskId) {
         dao.delete(taskId);
     }

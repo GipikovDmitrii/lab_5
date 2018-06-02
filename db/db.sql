@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   createdDate TIMESTAMP NOT NULL,
   endDate TIMESTAMP NOT NULL,
   user_id INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 INSERT INTO roles (role_id, role) VALUES (DEFAULT, 'admin');

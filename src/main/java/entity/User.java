@@ -10,6 +10,17 @@ public class User {
     private String email;
     private Role role;
 
+    public User() {
+    }
+
+    public User(int id, String login, String password, String email, Role role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
     public int getId() {
         return id;
     }
@@ -76,6 +87,10 @@ public class User {
 
         public Role(int id) {
             this.id = id;
+        }
+
+        public Role(String role) {
+            this.role = role;
         }
 
         public int getId() {

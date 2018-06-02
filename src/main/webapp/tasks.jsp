@@ -17,6 +17,11 @@
 <body>
     <div>
         <div>
+            <c:if test="${user.role.id == 1}">
+                <p><a href="/admin">Admin page</a></p>
+            </c:if>
+        </div>
+        <div>
             <h3>Tasks list</h3>
         </div>
         <div>

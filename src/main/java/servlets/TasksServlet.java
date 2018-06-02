@@ -1,4 +1,4 @@
-package servlets.servlet;
+package servlets;
 
 import entity.User;
 import services.Impl.TaskServiceImpl;
@@ -31,6 +31,6 @@ public class TasksServlet extends HttpServlet {
 
         service.deleteTask(taskId);
 
-        resp.sendRedirect("/tasks");
+        req.getRequestDispatcher("/tasks.jsp").forward(req, resp);
     }
 }

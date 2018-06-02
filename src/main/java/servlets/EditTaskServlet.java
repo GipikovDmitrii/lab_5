@@ -1,4 +1,4 @@
-package servlets.servlet;
+package servlets;
 
 import entity.Task;
 import services.Impl.TaskServiceImpl;
@@ -22,7 +22,7 @@ public class EditTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int taskId = Integer.parseInt(req.getParameter("taskId"));
-        req.getSession().setAttribute("task" ,service.getTaskById(taskId));
+        req.getSession().setAttribute("task", service.getTaskById(taskId));
 
         req.getRequestDispatcher("/editTask.jsp").forward(req, resp);
     }
