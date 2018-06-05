@@ -1,6 +1,5 @@
 package dao.Impl;
 
-import dao.DAOFactory;
 import dao.UserDAO;
 import entity.User;
 
@@ -17,7 +16,47 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private DataSource dataSource = DAOFactory.getInstance().getDataSource();
+    private DataSource dataSource;
+
+    public UserDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public boolean loginExists(User user) {
+        String sql = "SELECT * FROM users WHERE login = (?)";
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, user.getLogin());
+            result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean emailExists(User user) {
+        String sql = "SELECT * FROM users WHERE email = (?)";
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, user.getEmail());
+            result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
     @Override
     public void create(User user) {

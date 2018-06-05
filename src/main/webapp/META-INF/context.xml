@@ -4,6 +4,7 @@
               auth="Container"
               type="javax.sql.DataSource"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              connectionProperties="useUnicode=yes;characterEncoding=utf8;"
               driverClassName="org.postgresql.Driver"
               url="jdbc:postgresql://localhost:5432/task_manager"
               autoCommit="false"

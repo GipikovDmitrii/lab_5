@@ -1,6 +1,5 @@
 package dao.Impl;
 
-import dao.DAOFactory;
 import dao.TaskDAO;
 import entity.Task;
 
@@ -15,7 +14,11 @@ import java.util.List;
 public class TaskDAOImpl implements TaskDAO {
 
     private static Logger log = Logger.getLogger(TaskDAOImpl.class.getName());
-    private DataSource dataSource = DAOFactory.getInstance().getDataSource();
+    private DataSource dataSource;
+
+    public TaskDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void create(Task task, int userId) {

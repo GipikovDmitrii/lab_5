@@ -3,7 +3,6 @@ package dao;
 import dao.Impl.TaskDAOImpl;
 import dao.Impl.UserDAOImpl;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -11,30 +10,30 @@ import javax.sql.DataSource;
 public class DAOFactory {
 
     private static DAOFactory dbConnection = new DAOFactory();
-    private DataSource dataSource;
+    private static DataSource dataSource;
 
     public static DAOFactory getInstance() {
+        setDataSource();
         return dbConnection;
     }
 
-    public DataSource getDataSource() {
-        Context context = null;
+    private static void setDataSource() {
+        InitialContext context = null;
         try {
             context = new InitialContext();
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/task_manager");
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        return dataSource;
     }
 
     public TaskDAO getTaskDao() {
-        TaskDAO taskDAO = new TaskDAOImpl();
+        TaskDAO taskDAO = new TaskDAOImpl(dataSource);
         return taskDAO;
     }
 
     public UserDAO getUserDao() {
-        UserDAO userDAO = new UserDAOImpl();
+        UserDAO userDAO = new UserDAOImpl(dataSource);
         return userDAO;
     }
 
