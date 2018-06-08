@@ -27,11 +27,15 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-
         if (login.equals("") || password.equals("") || email.equals("")) {
-            req.setAttribute("message", "Fill in all fields");
+            req.setAttribute("message", "Fill in all fields.");
             req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-
+        } else if (service.checkExistEmail(email)) {
+            req.setAttribute("message", "User with this Email already exists.");
+            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
+        } else if (service.checkExistLogin(login)) {
+            req.setAttribute("message", "User with this login already exists.");
+            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
         } else {
             User user = new User();
             user.setLogin(login);

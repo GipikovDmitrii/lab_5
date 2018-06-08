@@ -10,14 +10,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Error</title>
     <meta charset="UTF-8">
+    <title>Error</title>
 </head>
 <body>
     <div>
-        <h3>Error</h3>
-        <h4><b>Exception:</b><br></h4>
-        <p><i>${pageContext.exception.message}</i><p>
+    <% if(response.getStatus() == 500){ %>
+        <div>
+            <p>Error: <%=exception.getMessage() %></p>
+        </div>
+    <%} else {%>
+        <div>
+            <p>Hi There, error code is <%=response.getStatus() %></p>
+            <p>Please go to <a href="/">home page</a></p>
+        </div>
+    <%} %>
     </div>
 </body>
 </html>

@@ -6,6 +6,12 @@ import java.util.List;
 
 public interface UserDAO {
 
+    boolean loginExists(String login);
+
+    boolean emailExists(String email);
+
+    boolean userExists(String login, String password);
+
     void create(User user);
 
     List<User> readAll();

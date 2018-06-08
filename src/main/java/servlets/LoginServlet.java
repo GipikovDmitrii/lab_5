@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 
         User user = userService.getUserByLogin(username);
 
-        if (user != null && user.getPassword().equals(password)) {
+        if (userService.checkExistUser(username, password)) {
             req.getSession().setAttribute("user", user);
             resp.sendRedirect("/tasks");
         } else {

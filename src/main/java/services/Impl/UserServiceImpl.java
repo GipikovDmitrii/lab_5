@@ -12,6 +12,21 @@ public class UserServiceImpl implements UserService {
     private UserDAO dao = DAOFactory.getInstance().getUserDao();
 
     @Override
+    public boolean checkExistEmail(String email) {
+        return dao.emailExists(email);
+    }
+
+    @Override
+    public boolean checkExistLogin(String login) {
+        return dao.loginExists(login);
+    }
+
+    @Override
+    public boolean checkExistUser(String login, String password) {
+        return dao.userExists(login, password);
+    }
+
+    @Override
     public void createUser(User user) {
         dao.create(user);
     }

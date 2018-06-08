@@ -22,7 +22,8 @@ public class UserDAOImpl implements UserDAO {
         this.dataSource = dataSource;
     }
 
-    public boolean loginExists(User user) {
+    @Override
+    public boolean loginExists(String login) {
         String sql = "SELECT * FROM users WHERE login = (?)";
 
         Connection connection = null;
@@ -31,16 +32,25 @@ public class UserDAOImpl implements UserDAO {
         try {
             connection = dataSource.getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setString(1, user.getLogin());
+            statement.setString(1, login);
             result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return true;
+        return false;
     }
 
-    public boolean emailExists(User user) {
+    @Override
+    public boolean emailExists(String email) {
         String sql = "SELECT * FROM users WHERE email = (?)";
 
         Connection connection = null;
@@ -49,13 +59,49 @@ public class UserDAOImpl implements UserDAO {
         try {
             connection = dataSource.getConnection();
             statement = connection.prepareStatement(sql);
-            statement.setString(1, user.getEmail());
+            statement.setString(1, email);
             result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean userExists(String login, String password) {
+        String sql = "SELECT * FROM users WHERE login = (?) AND password = (?)";
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, login);
+            statement.setString(2, password);
+            result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        try {
+            result.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+        return false;
     }
 
     @Override
@@ -121,7 +167,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User readByLogin(String login) {
-        String sql = "SELECT u.user_id, u.login, u.password, u.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.role_id WHERE u.login = (?);";
+        String sql = "SELECT u.user_id, u.login, u.email, u.password, u.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.role_id WHERE u.login = (?);";
         User user = null;
 
         Connection connection = null;
@@ -136,6 +182,7 @@ public class UserDAOImpl implements UserDAO {
                 user = new User();
                 user.setId(result.getInt("user_id"));
                 user.setLogin(result.getString("login"));
+                user.setEmail(result.getString("email"));
                 user.setPassword(result.getString("password"));
                 user.setRole(new User.Role(result.getInt("role")));
             }
