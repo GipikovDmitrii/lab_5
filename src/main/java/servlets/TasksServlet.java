@@ -18,19 +18,27 @@ public class TasksServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = (User) req.getSession().getAttribute("user");
-
+        User user = getUser(req);
         req.setAttribute("taskList", service.getAllTask(user));
-
         req.getRequestDispatcher("tasks.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int taskId = Integer.parseInt(req.getParameter("taskId"));
-
-        service.deleteTask(taskId);
+        User user = getUser(req);
+        if (req.getParameter("taskId") != null) {
+            int taskId = Integer.parseInt(req.getParameter("taskId"));
+            service.deleteTask(taskId);
+        }
+        if (req.getParameter("deleteAll") !=null) {
+            service.deleteAllTasks(user);
+        }
+        req.setAttribute("taskList", service.getAllTask(user));
 
         req.getRequestDispatcher("/tasks.jsp").forward(req, resp);
+    }
+
+    private User getUser(HttpServletRequest req) {
+        return (User) req.getSession().getAttribute("user");
     }
 }

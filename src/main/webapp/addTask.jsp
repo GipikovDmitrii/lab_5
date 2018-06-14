@@ -18,7 +18,7 @@
         <h3>New task</h3>
     </div>
     <div>
-        <form action="/addTask" method="post">
+        <form action="/tasks/addTask" method="post">
             <div>
                 <input type="text" name="title" placeholder="Title">
             </div>

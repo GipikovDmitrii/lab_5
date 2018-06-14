@@ -9,18 +9,20 @@ import javax.sql.DataSource;
 
 public class DAOFactory {
 
-    private static DAOFactory dbConnection = new DAOFactory();
+    private static DAOFactory factory = new DAOFactory();
     private static DataSource dataSource;
 
-    public static DAOFactory getInstance() {
+    static {
         setDataSource();
-        return dbConnection;
+    }
+
+    public static DAOFactory getInstance() {
+        return factory;
     }
 
     private static void setDataSource() {
-        InitialContext context = null;
         try {
-            context = new InitialContext();
+            InitialContext context = new InitialContext();
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/task_manager");
         } catch (NamingException e) {
             e.printStackTrace();

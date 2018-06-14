@@ -20,7 +20,7 @@
             <h3>Edit task</h3>
         </div>
         <div>
-            <form action="/editTask" method="post">
+            <form action="/tasks/editTask" method="post">
                 <div>
                     <input type="text" name="title" placeholder="Title" value="${task.title}">
                 </div>

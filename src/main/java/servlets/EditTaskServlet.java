@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet(name = "editTask", urlPatterns = "/editTask")
+@WebServlet(name = "editTask", urlPatterns = "/tasks/editTask")
 public class EditTaskServlet extends HttpServlet {
 
     private TaskService service = new TaskServiceImpl();
@@ -46,6 +46,5 @@ public class EditTaskServlet extends HttpServlet {
         service.updateTask(task);
 
         resp.sendRedirect("/tasks");
-        // TODO: 29.05.2018
     }
 }

@@ -16,24 +16,30 @@
 </head>
 <body>
     <div>
-        <div>
-            <c:if test="${user.role.id == 1}">
+        <c:if test="${user.role.id == 1}">
+            <div>
                 <p><a href="/admin">Admin page</a></p>
-            </c:if>
-        </div>
+            </div>
+        </c:if>
         <div>
             <h3>Tasks list</h3>
         </div>
         <div>
-            <div><a href="/addTask"><button>Add task</button></a></div>
+            <div><a href="/tasks/addTask"><button>Add task</button></a></div>
+            <div>
+                <form action="/tasks" method="post">
+                    <input type="hidden" name="deleteAll">
+                    <input type="submit" value="Delete all task">
+                </form>
+            </div>
             <ul>
                 <c:forEach items="${requestScope.taskList}" var="task">
                     <li>
-                        <div>Title:${task.title}</div>
-                        <div>Description:${task.description}</div>
-                        <div>Create date:<fmt:formatDate value="${task.createdDate}" pattern="MM/dd/yy HH:mm"/></div>
-                        <div>End date:<fmt:formatDate value="${task.endDate}" pattern="MM/dd/yy HH:mm"/></div>
-                        <div><a href="/editTask?taskId=${task.id}"><button>Edit</button></a></div>
+                        <div>Title: ${task.title}</div>
+                        <div>Description: ${task.description}</div>
+                        <div>Create date: <fmt:formatDate value="${task.createdDate}" pattern="MM/dd/yy HH:mm"/></div>
+                        <div>End date: <fmt:formatDate value="${task.endDate}" pattern="MM/dd/yy HH:mm"/></div>
+                        <div><a href="/tasks/editTask?taskId=${task.id}"><button>Edit</button></a></div>
                         <div>
                             <form action="/tasks" method="post">
                                 <input type="hidden" name="taskId" value="<c:out value="${task.id}"/>"/>

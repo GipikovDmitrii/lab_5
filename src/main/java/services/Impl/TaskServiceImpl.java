@@ -36,4 +36,9 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTask(int taskId) {
         dao.delete(taskId);
     }
+
+    @Override
+    public void deleteAllTasks(User user) {
+        dao.deleteAllTasksUser(user);
+    }
 }

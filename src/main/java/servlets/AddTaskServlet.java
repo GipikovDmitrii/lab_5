@@ -15,14 +15,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet(name = "addTask", urlPatterns = "/addTask")
+@WebServlet(name = "addTask", urlPatterns = "/tasks/addTask")
 public class AddTaskServlet extends HttpServlet {
 
     private TaskService service = new TaskServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("addTask.jsp").forward(req, resp);
+        req.getRequestDispatcher("/addTask.jsp").forward(req, resp);
     }
 
     @Override

@@ -166,4 +166,27 @@ public class TaskDAOImpl implements TaskDAO {
             }
         }
     }
+
+    @Override
+    public void deleteAllTasksUser(User user) {
+        String sql = "DELETE FROM tasks WHERE user_id = (?);";
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
