@@ -24,25 +24,16 @@ public class TaskDAOImpl implements TaskDAO {
     public void create(Task task, int userId) {
         String sql = "INSERT INTO tasks (task_id, title, description, createddate, enddate, user_id) VALUES (DEFAULT, (?), (?), current_timestamp, (?), (?));";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
             statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
             statement.setInt(4, userId);
             statement.execute();
+            log.info("User " + userId + " create task");
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            log.error("Failed to create task", e);
         }
     }
 
@@ -51,14 +42,10 @@ public class TaskDAOImpl implements TaskDAO {
         String sql = "SELECT t.task_id, t.title, t.description, t.createddate, t.enddate FROM tasks AS t WHERE user_id = (?);";
 
         List<Task> tasks = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, user.getId());
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Task task = new Task(
                         Integer.parseInt(result.getString("task_id")),
@@ -71,14 +58,6 @@ public class TaskDAOImpl implements TaskDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return tasks;
     }
@@ -88,14 +67,10 @@ public class TaskDAOImpl implements TaskDAO {
         String sql = "SELECT task_id, title, description, createddate, enddate FROM tasks WHERE task_id = (?)";
         Task task = null;
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, taskId);
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             if (result.next()) {
                 task = new Task();
                 task.setId(result.getInt("task_id"));
@@ -106,27 +81,15 @@ public class TaskDAOImpl implements TaskDAO {
             }
         } catch (SQLException e) {
           e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return task;
     }
-
-  @Override
+    @Override
     public void update(Task task) {
-        String sql = "UPDATE tasks SET title = (?), description = (?), enddate = (?) WHERE task_id = (?);";
+    String sql = "UPDATE tasks SET title = (?), description = (?), enddate = (?) WHERE task_id = (?);";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
             statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
@@ -134,13 +97,6 @@ public class TaskDAOImpl implements TaskDAO {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -148,45 +104,25 @@ public class TaskDAOImpl implements TaskDAO {
     public void delete(int taskId) {
         String sql = "DELETE FROM tasks WHERE task_id = (?);";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, taskId);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @Override
     public void deleteAllTasksUser(User user) {
-        String sql = "DELETE FROM tasks WHERE user_id = (?);";
+     String sql = "DELETE FROM tasks WHERE user_id = (?);";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, user.getId());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

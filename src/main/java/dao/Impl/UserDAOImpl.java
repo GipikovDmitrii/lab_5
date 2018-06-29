@@ -26,25 +26,13 @@ public class UserDAOImpl implements UserDAO {
     public boolean loginExists(String login) {
         String sql = "SELECT * FROM users WHERE login = (?)";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, login);
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return false;
     }
@@ -53,25 +41,13 @@ public class UserDAOImpl implements UserDAO {
     public boolean emailExists(String email) {
         String sql = "SELECT * FROM users WHERE email = (?)";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return false;
     }
@@ -80,27 +56,15 @@ public class UserDAOImpl implements UserDAO {
     public boolean userExists(String login, String password) {
         String sql = "SELECT * FROM users WHERE login = (?) AND password = (?)";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, login);
             statement.setString(2, password);
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-        try {
-            result.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-    }
         return false;
     }
 
@@ -108,11 +72,8 @@ public class UserDAOImpl implements UserDAO {
     public void create(User user) {
         String sql = "INSERT INTO users (user_id, login, email, password, role) VALUES (DEFAULT, (?), (?), (?), (?));";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
@@ -120,13 +81,6 @@ public class UserDAOImpl implements UserDAO {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -135,13 +89,9 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT u.user_id, u.login, u.email, u.password, r.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.role_id;";
         List<User> users = new ArrayList<>();
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
-            result = statement.executeQuery();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 User user = new User();
                     user.setId(result.getInt("user_id"));
@@ -153,14 +103,6 @@ public class UserDAOImpl implements UserDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return users;
     }
@@ -170,14 +112,10 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT u.user_id, u.login, u.email, u.password, u.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.role_id WHERE u.login = (?);";
         User user = null;
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, login);
-            result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
             if (result.next()) {
                 user = new User();
                 user.setId(result.getInt("user_id"));
@@ -188,14 +126,6 @@ public class UserDAOImpl implements UserDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return user;
     }
@@ -204,11 +134,8 @@ public class UserDAOImpl implements UserDAO {
     public void update(User user) {
         String sql = "UPDATE users SET login = (?), email = (?), password = (?) WHERE user_id = (?);";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
@@ -216,13 +143,6 @@ public class UserDAOImpl implements UserDAO {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -230,22 +150,12 @@ public class UserDAOImpl implements UserDAO {
     public void delete(int id) {
         String sql = "DELETE FROM users WHERE user_id = (?)";
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
