@@ -25,12 +25,24 @@
             <h3>Tasks list</h3>
         </div>
         <div>
-            <div><a href="/tasks/addTask"><button>Add task</button></a></div>
+            <div>
+                <a href="/tasks/addTask"><button>Add task</button></a>
+            </div>
+            <div>
+                <form action="/tasks/import" method="post">
+                    <input type="file" name="file" id="file">
+                    <input type="submit" value="Import task">
+                </form>
+            </div>
+            <div>
+                <a href="/tasks/export"><button>Export task</button></a>
+            </div>
             <div>
                 <form action="/tasks" method="post">
                     <input type="hidden" name="deleteAll">
                     <input type="submit" value="Delete all task">
                 </form>
+            </div>
             </div>
             <ul>
                 <c:forEach items="${requestScope.taskList}" var="task">

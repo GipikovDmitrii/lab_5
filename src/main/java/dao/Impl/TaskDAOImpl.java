@@ -2,8 +2,8 @@ package dao.Impl;
 
 import dao.TaskDAO;
 import entity.Task;
-
 import entity.User;
+
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
@@ -84,6 +84,7 @@ public class TaskDAOImpl implements TaskDAO {
         }
         return task;
     }
+
     @Override
     public void update(Task task) {
     String sql = "UPDATE tasks SET title = (?), description = (?), enddate = (?) WHERE task_id = (?);";

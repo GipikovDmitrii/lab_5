@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="user">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tasks">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="task" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element type="xs:int" name="id"/>
+                                        <xs:element type="xs:string" name="title"/>
+                                        <xs:element type="xs:string" name="description"/>
+                                        <xs:element type="xs:date" name="createdDate"/>
+                                        <xs:element type="xs:date" name="endDate"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:int" name="id"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

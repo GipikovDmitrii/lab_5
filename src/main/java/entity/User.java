@@ -1,14 +1,28 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement(name="user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
+    @XmlAttribute(name = "id")
     private int id;
+    @XmlTransient
     private String login;
+    @XmlTransient
     private String password;
+    @XmlTransient
     private String email;
+    @XmlTransient
     private Role role;
+
+    @XmlElementWrapper(name = "tasks")
+    @XmlElement(name = "task", type = Task.class)
+    private List<Task> taskList = new ArrayList<>();
 
     public User() {
     }
@@ -19,6 +33,14 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
     }
 
     public int getId() {
