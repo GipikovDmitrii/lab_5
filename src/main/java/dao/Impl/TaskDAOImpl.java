@@ -21,7 +21,7 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     @Override
-    public void create(Task task, int userId) {
+    public void createTask(Task task, int userId) {
         String sql = "INSERT INTO tasks (task_id, title, description, createddate, enddate, user_id) VALUES (DEFAULT, (?), (?), current_timestamp, (?), (?));";
 
         try (Connection connection = dataSource.getConnection()) {
@@ -31,6 +31,25 @@ public class TaskDAOImpl implements TaskDAO {
             statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
             statement.setInt(4, userId);
             statement.execute();
+            log.info("User " + userId + " create task");
+        } catch (SQLException e) {
+            log.error("Failed to create task", e);
+        }
+    }
+
+    @Override
+    public void createTasks(List<Task> tasks, int userId) {
+        String sql = "INSERT INTO tasks (task_id, title, description, createddate, enddate, user_id) VALUES (DEFAULT, (?), (?), current_timestamp, (?), (?));";
+
+        try (Connection connection = dataSource.getConnection()) {
+            for (Task task: tasks) {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1, task.getTitle());
+                statement.setString(2, task.getDescription());
+                statement.setTimestamp(3, new Timestamp(task.getEndDate().getTime()));
+                statement.setInt(4, userId);
+                statement.execute();
+            }
             log.info("User " + userId + " create task");
         } catch (SQLException e) {
             log.error("Failed to create task", e);

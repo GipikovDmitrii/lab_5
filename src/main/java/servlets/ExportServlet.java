@@ -22,23 +22,22 @@ public class ExportServlet extends HttpServlet {
 
         File file = xmlSessionBean.exportFile(user);
 
-        String fileType = "application/xml";
+        String fileName = "tasks";
+        String fileType = "text/xml";
 
         resp.setContentType(fileType);
         resp.setContentLength((int) file.length());
-        resp.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+        resp.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
 
         OutputStream out = resp.getOutputStream();
 
         try (FileInputStream in = new FileInputStream(file)) {
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[512];
             int length;
             while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
             out.flush();
         }
-
-        resp.sendRedirect("/tasks");
     }
 }

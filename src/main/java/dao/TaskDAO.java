@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface TaskDAO {
 
-    void create(Task task, int userId);
+    void createTask(Task task, int userId);
+
+    void createTasks(List<Task> tasks, int userId);
 
     List<Task> readAll(User user);
 

@@ -1,8 +1,6 @@
 package entity;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,6 +8,7 @@ import java.util.Objects;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Task {
 
+    @XmlTransient
     private int id;
     private String title;
     private String description;

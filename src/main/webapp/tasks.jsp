@@ -29,13 +29,13 @@
                 <a href="/tasks/addTask"><button>Add task</button></a>
             </div>
             <div>
-                <form action="/tasks/import" method="post">
+                <form action="/tasks/import" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" id="file">
-                    <input type="submit" value="Import task">
+                    <input type="submit" value="Import tasks">
                 </form>
             </div>
             <div>
-                <a href="/tasks/export"><button>Export task</button></a>
+                <a href="/tasks/export"><button>Export tasks</button></a>
             </div>
             <div>
                 <form action="/tasks" method="post">

@@ -14,7 +14,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void addTask(Task task, int userId) {
-        dao.create(task, userId);
+        dao.createTask(task, userId);
     }
 
     @Override

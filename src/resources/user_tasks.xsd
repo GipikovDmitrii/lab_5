@@ -9,11 +9,10 @@
                             <xs:element name="task" maxOccurs="unbounded" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element type="xs:int" name="id"/>
                                         <xs:element type="xs:string" name="title"/>
                                         <xs:element type="xs:string" name="description"/>
-                                        <xs:element type="xs:date" name="createdDate"/>
-                                        <xs:element type="xs:date" name="endDate"/>
+                                        <xs:element type="xs:dateTime" name="createdDate"/>
+                                        <xs:element type="xs:dateTime" name="endDate"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
@@ -21,7 +20,7 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute type="xs:int" name="id"/>
+            <xs:attribute type="xs:byte" name="id"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
